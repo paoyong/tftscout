@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/tftscout/static/css/main.03aea6c4.chunk.css",
-    "main.js": "/tftscout/static/js/main.06f0d81c.chunk.js",
-    "main.js.map": "/tftscout/static/js/main.06f0d81c.chunk.js.map",
-    "runtime-main.js": "/tftscout/static/js/runtime-main.6f50ea5c.js",
-    "runtime-main.js.map": "/tftscout/static/js/runtime-main.6f50ea5c.js.map",
+    "main.css": "/tftscout/static/css/main.2d7eb387.chunk.css",
+    "main.js": "/tftscout/static/js/main.74552200.chunk.js",
+    "main.js.map": "/tftscout/static/js/main.74552200.chunk.js.map",
+    "runtime-main.js": "/tftscout/static/js/runtime-main.29c99714.js",
+    "runtime-main.js.map": "/tftscout/static/js/runtime-main.29c99714.js.map",
     "static/css/2.e2d25f12.chunk.css": "/tftscout/static/css/2.e2d25f12.chunk.css",
-    "static/js/2.6f30ee51.chunk.js": "/tftscout/static/js/2.6f30ee51.chunk.js",
-    "static/js/2.6f30ee51.chunk.js.map": "/tftscout/static/js/2.6f30ee51.chunk.js.map",
-    "static/js/3.20fc6cf6.chunk.js": "/tftscout/static/js/3.20fc6cf6.chunk.js",
-    "static/js/3.20fc6cf6.chunk.js.map": "/tftscout/static/js/3.20fc6cf6.chunk.js.map",
+    "static/js/2.199b793e.chunk.js": "/tftscout/static/js/2.199b793e.chunk.js",
+    "static/js/2.199b793e.chunk.js.map": "/tftscout/static/js/2.199b793e.chunk.js.map",
+    "static/js/3.60af1be8.chunk.js": "/tftscout/static/js/3.60af1be8.chunk.js",
+    "static/js/3.60af1be8.chunk.js.map": "/tftscout/static/js/3.60af1be8.chunk.js.map",
     "index.html": "/tftscout/index.html",
     "static/css/2.e2d25f12.chunk.css.map": "/tftscout/static/css/2.e2d25f12.chunk.css.map",
-    "static/css/main.03aea6c4.chunk.css.map": "/tftscout/static/css/main.03aea6c4.chunk.css.map",
-    "static/js/2.6f30ee51.chunk.js.LICENSE.txt": "/tftscout/static/js/2.6f30ee51.chunk.js.LICENSE.txt",
+    "static/css/main.2d7eb387.chunk.css.map": "/tftscout/static/css/main.2d7eb387.chunk.css.map",
+    "static/js/2.199b793e.chunk.js.LICENSE.txt": "/tftscout/static/js/2.199b793e.chunk.js.LICENSE.txt",
     "static/media/App.css": "/tftscout/static/media/ahri_good.4a29c894.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.6f50ea5c.js",
+    "static/js/runtime-main.29c99714.js",
     "static/css/2.e2d25f12.chunk.css",
-    "static/js/2.6f30ee51.chunk.js",
-    "static/css/main.03aea6c4.chunk.css",
-    "static/js/main.06f0d81c.chunk.js"
+    "static/js/2.199b793e.chunk.js",
+    "static/css/main.2d7eb387.chunk.css",
+    "static/js/main.74552200.chunk.js"
   ]
 }
