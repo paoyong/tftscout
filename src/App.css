@@ -1,38 +1,120 @@
-.App {
-  text-align: center;
+@import url("https://fonts.googleapis.com/css?family=Source+Code+Pro:regular,bold,italic&subset=latin,latin-ext");
+* {
+  font-family: "Source Code Pro";
+  font-size: 14px;
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: #f7f5f2;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.app {
+  padding-top: 10px;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+h1 {
+  color: #52272c;
+  padding-top: 20px;
+  margin-bottom: 3px;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.app {
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  margin: auto;
+  max-width: 400px;
+}
+.bg {
+  background-size: 300px;
+  background-position: calc(50% + 230px) top;
+  background-repeat: no-repeat;
+}
+.bg.ahri-good {
+  background-image: url("ahri_good.png");
+}
+.bg.ahri-evil {
+  background-image: url("ahri_evil.png");
+}
+.header {
+  margin-bottom: 20px;
+  max-width: 430px;
+}
+footer {
+  position: fixed;
+  bottom: 10px;
+}
+.teemo-img {
+  transform: translate(0px, 15px);
+}
+.PlayerTile {
+  margin-bottom: 5px;
+}
+.PlayerTile * {
+  min-height: 40px;
+}
+.undo-rename-group {
+  text-align: right;
+}
+.bottom-buttons-group {
+  margin-top: 15px;
+}
+input {
+  font-family: "Source Code Pro";
+  font-size: 20px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding-left: 10px;
+  font-weight: bold;
   color: white;
 }
-
-.App-link {
-  color: #61dafb;
+::placeholder {
+  color: white;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+input.rename-off {
+  cursor: pointer;
+}
+.green {
+  background-color: #8eed90;
+  color: white;
+}
+.red {
+  background-color: #ff5757;
+  color: white;
+}
+.grey {
+  background-color: #c3c7c7;
+  color: #d5dbd8;
+}
+input.rename-on:hover {
+  background: #eeeeee;
+}
+input.rename-on:focus {
+  outline: none;
+  background: #737373;
+}
+input.rename-on:focus {
+  outline: none;
+}
+input.rename-off.active:hover {
+  background-color: #db4b4b;
+}
+input {
+  outline: none;
+}
+.reset-button {
+}
+.rename-button {
+  font-family: "Source Code Pro";
+  font-size: 14px;
+  background-color: #82e9ff;
+  color: white;
+  width: 150px;
+}
+.rename-button.pure-button-active {
+  background-color: #3dddff;
+}
+.eliminate-button {
+  color: white;
+  font-family: "Source Code Pro";
+  text-align: center;
 }
