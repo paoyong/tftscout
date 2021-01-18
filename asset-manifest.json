@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/tftscout/static/css/main.a045437e.chunk.css",
-    "main.js": "/tftscout/static/js/main.b0249692.chunk.js",
-    "main.js.map": "/tftscout/static/js/main.b0249692.chunk.js.map",
+    "main.css": "/tftscout/static/css/main.b2ad60ba.chunk.css",
+    "main.js": "/tftscout/static/js/main.91384f5b.chunk.js",
+    "main.js.map": "/tftscout/static/js/main.91384f5b.chunk.js.map",
     "runtime-main.js": "/tftscout/static/js/runtime-main.6f50ea5c.js",
     "runtime-main.js.map": "/tftscout/static/js/runtime-main.6f50ea5c.js.map",
     "static/css/2.e2d25f12.chunk.css": "/tftscout/static/css/2.e2d25f12.chunk.css",
@@ -12,14 +12,16 @@
     "static/js/3.20fc6cf6.chunk.js.map": "/tftscout/static/js/3.20fc6cf6.chunk.js.map",
     "index.html": "/tftscout/index.html",
     "static/css/2.e2d25f12.chunk.css.map": "/tftscout/static/css/2.e2d25f12.chunk.css.map",
-    "static/css/main.a045437e.chunk.css.map": "/tftscout/static/css/main.a045437e.chunk.css.map",
-    "static/js/2.d74e5823.chunk.js.LICENSE.txt": "/tftscout/static/js/2.d74e5823.chunk.js.LICENSE.txt"
+    "static/css/main.b2ad60ba.chunk.css.map": "/tftscout/static/css/main.b2ad60ba.chunk.css.map",
+    "static/js/2.d74e5823.chunk.js.LICENSE.txt": "/tftscout/static/js/2.d74e5823.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/tftscout/static/media/petals.3c3988fa.png",
+    "static/media/teemo.f87a2123.png": "/tftscout/static/media/teemo.f87a2123.png"
   },
   "entrypoints": [
     "static/js/runtime-main.6f50ea5c.js",
     "static/css/2.e2d25f12.chunk.css",
     "static/js/2.d74e5823.chunk.js",
-    "static/css/main.a045437e.chunk.css",
-    "static/js/main.b0249692.chunk.js"
+    "static/css/main.b2ad60ba.chunk.css",
+    "static/js/main.91384f5b.chunk.js"
   ]
 }
