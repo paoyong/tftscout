@@ -269,8 +269,8 @@ class App extends React.Component {
            {this.state.present.matchHistory.length === 0 ? "<empty>" : MatchHistoryList}
           <footer>
             {" "}
-            Made by Pao Yong with React.js -{" "}
-            <a href="https://github.com/paoyong/tftscout">GitHub</a>
+            Made by Pao Yong with ReactJS •{" "}
+            <a href="https://github.com/paoyong/tftscout">GitHub</a> • Art by Riot Games
           </footer>
         </div>
       </div>
