@@ -1,23 +1,25 @@
 {
   "files": {
-    "main.css": "/tftscout/static/css/main.c93bd4cb.chunk.css",
-    "main.js": "/tftscout/static/js/main.c5c1657e.chunk.js",
-    "main.js.map": "/tftscout/static/js/main.c5c1657e.chunk.js.map",
-    "runtime-main.js": "/tftscout/static/js/runtime-main.29c99714.js",
-    "runtime-main.js.map": "/tftscout/static/js/runtime-main.29c99714.js.map",
-    "static/js/2.9b405620.chunk.js": "/tftscout/static/js/2.9b405620.chunk.js",
-    "static/js/2.9b405620.chunk.js.map": "/tftscout/static/js/2.9b405620.chunk.js.map",
-    "static/js/3.60af1be8.chunk.js": "/tftscout/static/js/3.60af1be8.chunk.js",
-    "static/js/3.60af1be8.chunk.js.map": "/tftscout/static/js/3.60af1be8.chunk.js.map",
+    "main.css": "/tftscout/static/css/main.a045437e.chunk.css",
+    "main.js": "/tftscout/static/js/main.b0249692.chunk.js",
+    "main.js.map": "/tftscout/static/js/main.b0249692.chunk.js.map",
+    "runtime-main.js": "/tftscout/static/js/runtime-main.6f50ea5c.js",
+    "runtime-main.js.map": "/tftscout/static/js/runtime-main.6f50ea5c.js.map",
+    "static/css/2.e2d25f12.chunk.css": "/tftscout/static/css/2.e2d25f12.chunk.css",
+    "static/js/2.d74e5823.chunk.js": "/tftscout/static/js/2.d74e5823.chunk.js",
+    "static/js/2.d74e5823.chunk.js.map": "/tftscout/static/js/2.d74e5823.chunk.js.map",
+    "static/js/3.20fc6cf6.chunk.js": "/tftscout/static/js/3.20fc6cf6.chunk.js",
+    "static/js/3.20fc6cf6.chunk.js.map": "/tftscout/static/js/3.20fc6cf6.chunk.js.map",
     "index.html": "/tftscout/index.html",
-    "static/css/main.c93bd4cb.chunk.css.map": "/tftscout/static/css/main.c93bd4cb.chunk.css.map",
-    "static/js/2.9b405620.chunk.js.LICENSE.txt": "/tftscout/static/js/2.9b405620.chunk.js.LICENSE.txt",
-    "static/media/logo.6ce24c58.svg": "/tftscout/static/media/logo.6ce24c58.svg"
+    "static/css/2.e2d25f12.chunk.css.map": "/tftscout/static/css/2.e2d25f12.chunk.css.map",
+    "static/css/main.a045437e.chunk.css.map": "/tftscout/static/css/main.a045437e.chunk.css.map",
+    "static/js/2.d74e5823.chunk.js.LICENSE.txt": "/tftscout/static/js/2.d74e5823.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.29c99714.js",
-    "static/js/2.9b405620.chunk.js",
-    "static/css/main.c93bd4cb.chunk.css",
-    "static/js/main.c5c1657e.chunk.js"
+    "static/js/runtime-main.6f50ea5c.js",
+    "static/css/2.e2d25f12.chunk.css",
+    "static/js/2.d74e5823.chunk.js",
+    "static/css/main.a045437e.chunk.css",
+    "static/js/main.b0249692.chunk.js"
   ]
 }
