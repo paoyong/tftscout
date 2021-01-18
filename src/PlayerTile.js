@@ -7,7 +7,16 @@ class SmartInput extends React.Component {
 
   render() {
     // If in Rename mode, it is a regular text field
-    if (this.props.rename) {
+    if (this.props.status === "eliminated") {
+        return <input
+          className={this.props.color + " rename-off"}
+          id={this.props.id}
+          type="text"
+          autocomplete="off"
+          value={this.props.name}
+          disabled
+        />
+    } else if (this.props.rename) {
       return (
         <input
           className={this.props.color + " rename-on"}
@@ -29,6 +38,7 @@ class SmartInput extends React.Component {
           onMouseDown={this.props.handlePlayerTileClick}
           onContextMenu={(e) => e.preventDefault()}
           readonly="readonly"
+          unselectable="on"
           tabindex="-1"
         />
       );

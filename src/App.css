@@ -15,14 +15,15 @@ body {
 }
 h1 {
   color: #52272c;
-  padding-top: 20px;
   margin-bottom: 3px;
 }
 .app {
   justify-content: center;
   margin: auto;
+
   max-width: 400px;
 }
+
 .bg {
   background-size: 300px;
   background-position: calc(50% + 230px) top;
@@ -57,7 +58,17 @@ footer {
 .bottom-buttons-group {
   margin-top: 15px;
 }
+.players-list {
+        -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    background: #f7f5f2;
+   border: 20px  white;
+
+}
 input {
+
   font-family: "Source Code Pro";
   font-size: 20px;
   width: 100%;
@@ -86,11 +97,11 @@ input.rename-off {
   color: #d5dbd8;
 }
 input.rename-on:hover {
-  background: #eeeeee;
+  background: #a3a3a3;
 }
 input.rename-on:focus {
   outline: none;
-  background: #737373;
+  background: #939393;
 }
 input.rename-on:focus {
   outline: none;
@@ -106,9 +117,9 @@ input {
 .rename-button {
   font-family: "Source Code Pro";
   font-size: 14px;
-  background-color: #82e9ff;
+  background-color: #3dddff;
   color: white;
-  width: 150px;
+  width: 100px;
 }
 .rename-button.pure-button-active {
   background-color: #3dddff;

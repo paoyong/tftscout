@@ -12,6 +12,7 @@ function getStartState() {
       state: 0,
     },
     present: {
+      elim_c: 0,
       players: [
         { id: "1", name: "", status: "active", c: 0 },
         { id: "2", name: "", status: "active", c: 0 },
@@ -31,7 +32,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.handlePlayerTileClick = this.handlePlayerTileClick.bind(this);
-    this.handleEliminate = this.handleEliminate.bind(this);
     this.handleUndo = this.handleUndo.bind(this);
     this.handleText = this.handleText.bind(this);
     this.handleReset = this.handleReset.bind(this);
@@ -64,6 +64,7 @@ class App extends React.Component {
         state: s.past.state,
       },
       present: {
+        elim_c: s.present.elim_c,
         players: s.present.players,
         matchHistory: s.present.matchHistory,
       },
@@ -71,45 +72,73 @@ class App extends React.Component {
   }
 
   handlePlayerTileClick(e) {
-    const players = this.state.present.players;
+    const i = e.target.id - 1;
+    const new_players = this.state.present.players;
     const snapshot_past = cloneDeep(this.state.past);
     const snapshot_present = cloneDeep(this.state.present);
-    const i = e.target.id - 1;
 
-    console.log(e.buttons);
+    var new_matchHistory = cloneDeep(this.state.present.matchHistory)
+    var new_matchHistoryPlayer = cloneDeep(new_players[i]);
+
+
+    // Match
     if (e.buttons === 1) {
-      players[i].status = "matched";
-      players[i].c++;
+      new_players[i].status = "matched";
+      new_players.forEach((p, index) => {
+        if (p.status !== "eliminated") {
+            if (p.c !== 0 || index === i) {
+                if (p.c >= (4 - this.state.present.elim_c)) {
+                    p.c = 0;
+                    p.status = "active"
+                } else {
+                   p.c++;
+                }
+            }
+        }
+
+      });
+
+      new_matchHistoryPlayer.status = "matched";
+      new_matchHistory.push(new_matchHistoryPlayer)
 
       this.setState({
         past: {
           past: snapshot_past,
           state: snapshot_present,
         },
-        players: players,
+        present: {
+            elim_c: this.state.present.elim_c,
+            players: new_players,
+            matchHistory: new_matchHistory
+        }
       });
+
+    // Eliminate
     } else if (e.buttons === 2) {
-      console.log("right");
-      players[i].status = "eliminated";
-      players[i].c = 0;
-      players.forEach((p) => {
+
+      new_players[i].status = "eliminated";
+      new_players.forEach((p) => {
         if (p.status === "matched") {
+          p.c = 0;
           p.status = "active";
         }
       });
 
+      new_matchHistoryPlayer.status = "eliminated";
+      new_matchHistory.push(new_matchHistoryPlayer);
+
       this.setState({
         past: {
           past: snapshot_past,
           state: snapshot_present,
         },
-        players: players,
+        present: {
+            elim_c: this.state.present.elim_c + 1,
+            players: new_players,
+            matchHistory: new_matchHistory
+        }
       });
     }
-  }
-
-  handleEliminate(e) {
-    e.preventDefault();
   }
 
   handleUndo(e) {
@@ -118,6 +147,7 @@ class App extends React.Component {
     this.setState({
       past: pastpast,
       present: {
+        elim_c: past.state.elim_c,
         players: past.state.players,
         matchHistory: past.state.matchHistory,
       },
@@ -164,29 +194,41 @@ class App extends React.Component {
       }
     });
 
+    const MatchHistoryList = this.state.present.matchHistory.map((p) => {
+        var status = "";
+        if (p.status === "matched") {
+            status = "⚔️" 
+        } else {
+            status = "❌"
+        }
+        return <span><button class="button-xsmall pure-button">{status + this.state.present.players[p.id-1].name + " "}</button>&nbsp;</span>
+    });
+
     return (
       <div className={"bg " + (this.state.rename ? "ahri-good" : "ahri-evil")}>
         <div onContextMenu={(e) => e.preventDefault()} className="app">
           <div className="header">
             <h1>TFT SCOUTER</h1>
+                      <p>🔴 = possible to face them next round</p>
           </div>
-
-          {ActiveList}
-          {EliminatedList}
+          <div className="players-list">
+              {ActiveList}
+              {EliminatedList}
+          </div>
 
           <div className="pure-g bottom-buttons-group">
             <div class="pure-u-3-5">
               {this.TabRename()}
               <button
                 className={
-                  "rename-button pure-button " +
-                  (this.state.rename ? "pure-button-active" : "")
+                  "rename-button pure-button "
                 }
                 onClick={this.renameToggle}
                 tabindex="-1"
-              >
-                {this.state.rename ? "Rename Mode" : "Match Mode"}
+              > Toggle
               </button>
+              <span>{this.state.rename ? " Rename Mode" : " Match Mode"} </span>
+
             </div>
             <div class="pure-u-2-5">
               <div
@@ -223,9 +265,8 @@ class App extends React.Component {
               ? "⌨️ TAB again at the end to go to match mode"
               : "🖱️ RIGHT-CLICK to eliminate"}
           </p>
-          <p>
-            {this.state.rename ? "" : "🔴 = possible to face them next round"}
-          </p>
+          <h2>Match History</h2>
+           {this.state.present.matchHistory.length === 0 ? "<empty>" : MatchHistoryList}
           <footer>
             {" "}
             Made by Pao Yong with React.js -{" "}
