@@ -77,29 +77,27 @@ class App extends React.Component {
     const snapshot_past = cloneDeep(this.state.past);
     const snapshot_present = cloneDeep(this.state.present);
 
-    var new_matchHistory = cloneDeep(this.state.present.matchHistory)
+    var new_matchHistory = cloneDeep(this.state.present.matchHistory);
     var new_matchHistoryPlayer = cloneDeep(new_players[i]);
-
 
     // Match
     if (e.buttons === 1) {
       new_players[i].status = "matched";
       new_players.forEach((p, index) => {
         if (p.status !== "eliminated") {
-            if (p.c !== 0 || index === i) {
-                if (p.c >= (4 - this.state.present.elim_c)) {
-                    p.c = 0;
-                    p.status = "active"
-                } else {
-                   p.c++;
-                }
+          if (p.c !== 0 || index === i) {
+            if (p.c >= 4 - this.state.present.elim_c) {
+              p.c = 0;
+              p.status = "active";
+            } else {
+              p.c++;
             }
+          }
         }
-
       });
 
       new_matchHistoryPlayer.status = "matched";
-      new_matchHistory.push(new_matchHistoryPlayer)
+      new_matchHistory.push(new_matchHistoryPlayer);
 
       this.setState({
         past: {
@@ -107,15 +105,14 @@ class App extends React.Component {
           state: snapshot_present,
         },
         present: {
-            elim_c: this.state.present.elim_c,
-            players: new_players,
-            matchHistory: new_matchHistory
-        }
+          elim_c: this.state.present.elim_c,
+          players: new_players,
+          matchHistory: new_matchHistory,
+        },
       });
 
-    // Eliminate
+      // Eliminate
     } else if (e.buttons === 2) {
-
       new_players[i].status = "eliminated";
       new_players.forEach((p) => {
         if (p.status === "matched") {
@@ -133,10 +130,10 @@ class App extends React.Component {
           state: snapshot_present,
         },
         present: {
-            elim_c: this.state.present.elim_c + 1,
-            players: new_players,
-            matchHistory: new_matchHistory
-        }
+          elim_c: this.state.present.elim_c + 1,
+          players: new_players,
+          matchHistory: new_matchHistory,
+        },
       });
     }
   }
@@ -195,13 +192,20 @@ class App extends React.Component {
     });
 
     const MatchHistoryList = this.state.present.matchHistory.map((p) => {
-        var status = "";
-        if (p.status === "matched") {
-            status = "⚔️" 
-        } else {
-            status = "❌"
-        }
-        return <span><button class="button-xsmall pure-button">{status + this.state.present.players[p.id-1].name + " "}</button>&nbsp;</span>
+      var status = "";
+      if (p.status === "matched") {
+        status = "⚔️";
+      } else {
+        status = "❌";
+      }
+      return (
+        <span>
+          <button class="button-xsmall pure-button">
+            {status + this.state.present.players[p.id - 1].name + " "}
+          </button>
+          &nbsp;
+        </span>
+      );
     });
 
     return (
@@ -209,26 +213,25 @@ class App extends React.Component {
         <div onContextMenu={(e) => e.preventDefault()} className="app">
           <div className="header">
             <h1>TFT SCOUTER</h1>
-                      <p>🔴 = possible to face them next round</p>
+            <p>🔴 = possible to face them next round</p>
           </div>
           <div className="players-list">
-              {ActiveList}
-              {EliminatedList}
+            {ActiveList}
+            {EliminatedList}
           </div>
 
           <div className="pure-g bottom-buttons-group">
             <div class="pure-u-3-5">
               {this.TabRename()}
               <button
-                className={
-                  "rename-button pure-button "
-                }
+                className={"rename-button pure-button "}
                 onClick={this.renameToggle}
                 tabindex="-1"
-              > Toggle
+              >
+                {" "}
+                Toggle
               </button>
               <span>{this.state.rename ? " Rename Mode" : " Match Mode"} </span>
-
             </div>
             <div class="pure-u-2-5">
               <div
@@ -266,11 +269,14 @@ class App extends React.Component {
               : "🖱️ RIGHT-CLICK to eliminate"}
           </p>
           <h2>Match History</h2>
-           {this.state.present.matchHistory.length === 0 ? "<empty>" : MatchHistoryList}
+          {this.state.present.matchHistory.length === 0
+            ? "<empty>"
+            : MatchHistoryList}
           <footer>
             {" "}
             Made by Pao Yong with ReactJS •{" "}
-            <a href="https://github.com/paoyong/tftscout">GitHub</a> • Art by Riot Games
+            <a href="https://github.com/paoyong/tftscout">GitHub</a> • Art by
+            Riot Games
           </footer>
         </div>
       </div>

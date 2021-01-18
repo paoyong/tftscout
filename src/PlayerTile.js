@@ -8,7 +8,8 @@ class SmartInput extends React.Component {
   render() {
     // If in Rename mode, it is a regular text field
     if (this.props.status === "eliminated") {
-        return <input
+      return (
+        <input
           className={this.props.color + " rename-off"}
           id={this.props.id}
           type="text"
@@ -16,6 +17,7 @@ class SmartInput extends React.Component {
           value={this.props.name}
           disabled
         />
+      );
     } else if (this.props.rename) {
       return (
         <input

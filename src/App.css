@@ -13,7 +13,8 @@ body {
 .app {
   padding-top: 10px;
 }
-h1, h2 {
+h1,
+h2 {
   color: #52272c;
   margin-bottom: 3px;
 }
@@ -39,13 +40,13 @@ h1, h2 {
   margin-bottom: 20px;
   max-width: 430px;
 }
-footer  {
+footer {
   font-size: 11px;
   position: fixed;
   bottom: 10px;
 }
 footer a {
-    font-size: 11px;
+  font-size: 11px;
 }
 .teemo-img {
   transform: translate(0px, 15px);
@@ -63,16 +64,14 @@ footer a {
   margin-top: 15px;
 }
 .players-list {
-        -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 
-    background: #f7f5f2;
-   border: 20px  white;
-
+  background: #f7f5f2;
+  border: 20px white;
 }
 input {
-
   font-family: "Source Code Pro";
   font-size: 20px;
   width: 100%;
