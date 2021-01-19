@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/tftscout/static/css/main.fd66c7db.chunk.css",
-    "main.js": "/tftscout/static/js/main.45be624f.chunk.js",
-    "main.js.map": "/tftscout/static/js/main.45be624f.chunk.js.map",
+    "main.js": "/tftscout/static/js/main.618e9928.chunk.js",
+    "main.js.map": "/tftscout/static/js/main.618e9928.chunk.js.map",
     "runtime-main.js": "/tftscout/static/js/runtime-main.29c99714.js",
     "runtime-main.js.map": "/tftscout/static/js/runtime-main.29c99714.js.map",
     "static/css/2.e2d25f12.chunk.css": "/tftscout/static/css/2.e2d25f12.chunk.css",
@@ -21,6 +21,6 @@
     "static/css/2.e2d25f12.chunk.css",
     "static/js/2.564d35c9.chunk.js",
     "static/css/main.fd66c7db.chunk.css",
-    "static/js/main.45be624f.chunk.js"
+    "static/js/main.618e9928.chunk.js"
   ]
 }
