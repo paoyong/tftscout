@@ -24,6 +24,10 @@ function getStartState() {
       ],
       matchHistory: [],
     },
+    future: {
+        future: 0,
+        state: 0
+    }
   };
   return cloneDeep(startState);
 }
@@ -33,6 +37,7 @@ class App extends React.Component {
     super(props);
     this.handlePlayerTileClick = this.handlePlayerTileClick.bind(this);
     this.handleUndo = this.handleUndo.bind(this);
+    this.handleRedo = this.handleRedo.bind(this);
     this.handleText = this.handleText.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.renameToggle = this.renameToggle.bind(this);
@@ -139,6 +144,8 @@ class App extends React.Component {
   }
 
   handleUndo(e) {
+    const present = cloneDeep(this.state.present);
+    const future = cloneDeep(this.state.future);
     const past = cloneDeep(this.state.past);
     const pastpast = cloneDeep(this.state.past.past);
     this.setState({
@@ -148,6 +155,29 @@ class App extends React.Component {
         players: past.state.players,
         matchHistory: past.state.matchHistory,
       },
+      future: {
+        future: future,
+        state: present
+      }
+    });
+  }
+
+  handleRedo(e) {
+    const past = cloneDeep(this.state.past);
+    const present = cloneDeep(this.state.present);
+    const future = cloneDeep(this.state.future);
+    const futurefuture = cloneDeep(this.state.future.future);
+    this.setState({
+      past: {
+        past: past,
+        state: present
+      },
+      present: {
+        elim_c: future.state.elim_c,
+        players: future.state.players,
+        matchHistory: future.state.matchHistory,
+      },
+      future: futurefuture
     });
   }
 
@@ -199,12 +229,9 @@ class App extends React.Component {
         status = "❌";
       }
       return (
-        <span>
-          <button class="button-xsmall pure-button">
-            {status + this.state.present.players[p.id - 1].name + " "}
+          <button tabIndex="-1" class="match-history-button button-xsmall pure-button">
+            {status + this.state.present.players[p.id - 1].name}
           </button>
-          &nbsp;
-        </span>
       );
     });
 
@@ -221,7 +248,7 @@ class App extends React.Component {
           </div>
 
           <div className="pure-g bottom-buttons-group">
-            <div class="pure-u-3-5">
+            <div class="pure-u-2-5">
               {this.TabRename()}
               <button
                 className={"rename-button pure-button "}
@@ -231,9 +258,9 @@ class App extends React.Component {
                 {" "}
                 Toggle
               </button>
-              <span>{this.state.rename ? " Rename Mode" : " Match Mode"} </span>
+              <span className="noselect">{this.state.rename ? " Rename" : " Match"} </span>
             </div>
-            <div class="pure-u-2-5">
+            <div class="pure-u-3-5 ">
               <div
                 class="pure-button-group undo-rename-group"
                 role="group"
@@ -247,9 +274,17 @@ class App extends React.Component {
                 >
                   Undo
                 </button>
+                <button
+                  className="redo-button pure-button"
+                  onClick={this.handleRedo}
+                  tabindex="-1"
+                  disabled={this.state.future.future === 0}
+                >
+                  Redo
+                </button>
 
                 <button
-                  className="reset-button pure-button"
+                  className="reset-button pure-button red"
                   onClick={this.handleReset}
                   tabindex="-1"
                 >
@@ -258,12 +293,12 @@ class App extends React.Component {
               </div>
             </div>
           </div>
-          <p>
+          <p className="noselect">
             {this.state.rename
               ? "⌨️ TAB to cycle through and rename"
               : "🖱️ CLICK on names when you match with them"}
           </p>
-          <p>
+          <p className="noselect">
             {this.state.rename
               ? "⌨️ TAB again at the end to go to match mode"
               : "🖱️ RIGHT-CLICK to eliminate"}
