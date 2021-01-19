@@ -473,8 +473,8 @@ class App extends React.Component {
           </div>
           <footer>
             {" "}
-          <a href="https://github.com/paoyong/tftscout">GitHub</a> •&nbsp;  
-          <a href="https://github.com/paoyong/tftscout#algorithm">Algorithm</a> •  Art Copyright
+          <a href="https://github.com/paoyong/tftscout" tabIndex="-1">GitHub</a> •&nbsp;  
+          <a href="https://github.com/paoyong/tftscout#algorithm" tabIndex="-1">Algorithm</a> •  Art Copyright
             Riot Games
           </footer>
         </div>
