@@ -133,13 +133,19 @@ class App extends React.Component {
       new_matchHistoryPlayer.status = "eliminated";
       new_matchHistory.push(new_matchHistoryPlayer);
 
+      const new_elim_c = (() => {
+        if (this.state.present.elim_c < 3)
+            return this.state.present.elim_c + 1
+        else
+            return this.state.present.elim_c
+      })();
       this.setState({
         past: {
           past: snapshot_past,
           state: snapshot_present,
         },
         present: {
-          elim_c: this.state.present.elim_c + 1,
+          elim_c: new_elim_c,
           players: new_players,
           matchHistory: new_matchHistory,
         },
