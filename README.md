@@ -2,6 +2,8 @@
 
 Scout players in TFT, EZ Clap
 
+To use this [https://paoyong.github.io/tftscout/](https://paoyong.github.io/tftscout/)
+
 ## How to Code
 
 After git clone:
