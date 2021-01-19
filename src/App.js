@@ -42,6 +42,7 @@ class App extends React.Component {
     this.handleReset = this.handleReset.bind(this);
     this.renameToggle = this.renameToggle.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.matchGhost = this.matchGhost.bind(this);
     this.state = getStartState();
     this.current_id_list = [];
     this.hotkey_list = ['a', 's', 'z', 'x', 'c', 'v', 'b'];
@@ -159,7 +160,15 @@ class App extends React.Component {
       new_players.forEach((p, index) => {
         if (p.status !== "eliminated") {
           if (p.c !== 0) {
-            if (p.c >= 4 - this.state.present.elim_c) {
+            if (this.state.present.elim_c > 3) {
+                if (p.c >= 1) {
+                    p.c = 0;
+                    p.status = "active";
+                } else {
+                    p.c++;
+                }
+            }
+            else if (p.c >= 4 - this.state.present.elim_c) {
               p.c = 0;
               p.status = "active";
             } else {
@@ -200,8 +209,17 @@ class App extends React.Component {
       new_players[i].status = "matched";
       new_players.forEach((p, index) => {
         if (p.status !== "eliminated") {
-          if (p.c !== 0 || index === i) {
-            if (p.c >= 4 - this.state.present.elim_c) {
+          if (index === i) p.c++
+          else if (p.c !== 0) {
+            if (this.state.present.elim_c > 3) {
+                if (p.c >= 1) {
+                    p.c = 0;
+                    p.status = "active";
+                } else {
+                    p.c++;
+                }
+            }
+            else if (p.c >= 4 - this.state.present.elim_c) {
               p.c = 0;
               p.status = "active";
             } else {
@@ -231,7 +249,7 @@ class App extends React.Component {
       new_players[i].status = "eliminated";
 
       // reset if 3 players left
-      if (this.state.present.elim_c === 3) {
+      if (this.state.present.elim_c >= 4) {
          new_players.forEach((p) => {
         if (p.status === "matched") {
           p.c = 0;
@@ -243,10 +261,7 @@ class App extends React.Component {
       new_matchHistoryPlayer.status = "eliminated";
       new_matchHistory.push(new_matchHistoryPlayer);
 
-      const new_elim_c = (() => {
-        if (this.state.present.elim_c < 3) return this.state.present.elim_c + 1;
-        else return this.state.present.elim_c;
-      })();
+      const new_elim_c = this.state.present.elim_c + 1;
 
       this.setState({
         past: {
@@ -387,7 +402,7 @@ class App extends React.Component {
           </div>
           <div className="pure-g">
               <div className="pure-u-5-5 player-tile">
-                <button className="pure-button ghost-button" disabled={this.state.rename}>👻 Ghost (G) - Skip a match</button>
+                <button className="pure-button ghost-button" onClick={this.matchGhost} disabled={this.state.rename}>👻 Ghost (G) - Add One Round</button>
                 <span className={"hotkey-label ghost-hotkey-label " + (this.state.rename ? "ghost-hotkey-label-light":"")}  >g</span>
               </div>
           </div>
