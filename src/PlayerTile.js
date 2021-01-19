@@ -9,40 +9,50 @@ class SmartInput extends React.Component {
     // If in Rename mode, it is a regular text field
     if (this.props.status === "eliminated") {
       return (
+        <div className="player-tile">
         <input
           className={this.props.color + " rename-off"}
           id={this.props.id}
           type="text"
-          autocomplete="off"
+          autoComplete="off"
           value={this.props.name}
           disabled
         />
+        <span className="hotkey-label">{this.props.hotkey}</span>
+        </div>
       );
     } else if (this.props.rename) {
       return (
+        <div className="player-tile">
         <input
           className={this.props.color + " rename-on"}
           placeholder="<input name>"
           id={this.props.id}
           type="text"
           onChange={this.props.handleText}
-          autocomplete="off"
+          autoComplete="off"
           value={this.props.name}
         />
+        <span className="hotkey-label">{this.props.hotkey}</span>
+        </div>
       );
     } else {
       return (
+        <div className="player-tile">
+
         <input
           className={this.props.color + " rename-off " + this.props.status}
           id={this.props.id}
-          autocomplete="off"
+          autoComplete="off"
           value={this.props.name}
           onMouseDown={this.props.handlePlayerTileClick}
           onContextMenu={(e) => e.preventDefault()}
-          readonly="readonly"
+          readonly="readOnly"
           unselectable="on"
-          tabindex="-1"
+          tabIndex="-1"
         />
+        <span className="hotkey-label">{this.props.hotkey}</span>
+        </div>
       );
     }
   }
@@ -78,6 +88,7 @@ class PlayerTile extends React.Component {
           name={this.props.name}
           status={this.props.status}
           handleEliminate={this.props.handleEliminate}
+          hotkey={this.props.hotkey}
         />
       </div>
     );

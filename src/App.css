@@ -6,7 +6,6 @@
 html,
 body {
   height: 100%;
-  margin: 0;
   background: #f7f5f2;
 }
 
@@ -21,7 +20,7 @@ h2 {
 .app {
   justify-content: center;
   margin: auto;
-
+  min-height: 500px;
   max-width: 400px;
 }
 
@@ -41,9 +40,8 @@ h2 {
   max-width: 430px;
 }
 footer {
+  margin-top: 50px;
   font-size: 11px;
-  position: fixed;
-  bottom: 10px;
 }
 footer a {
   font-size: 11px;
@@ -54,7 +52,7 @@ footer a {
 .PlayerTile {
   margin-bottom: 5px;
 }
-.PlayerTile * {
+.PlayerTile *, .ghost-button {
   min-height: 40px;
 }
 .undo-rename-group {
@@ -63,23 +61,18 @@ footer a {
 .bottom-buttons-group {
   margin-top: 15px;
 }
-.players-list {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 
-  background: #f7f5f2;
-  border: 20px white;
-}
 input {
   font-family: "Source Code Pro";
   font-size: 20px;
-  width: 100%;
+  width:388px;
   border: 0;
   background: transparent;
   padding-left: 10px;
   font-weight: bold;
   color: white;
+  position: relative;
+  display: inline-block;
 }
 ::placeholder {
   color: white;
@@ -130,6 +123,10 @@ input {
   font-family: "Source Code Pro";
   text-align: center;
 }
+.ghost-button {
+    font-family: "Source Code Pro";
+    width: 100%;
+}
 .match-history-button {
   pointer-events: none;
   cursor: not-allowed;
@@ -145,4 +142,27 @@ input {
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
+}
+.match-history-list {
+  height: 270px;
+}
+
+.player-tile {
+    position: relative;
+}
+
+.hotkey-label {
+    font-size: 16px;
+    color: white;
+    position: absolute;
+    top: 1px;
+    right: 9px;
+}
+.ghost-hotkey-label {
+    right: 7px;
+    color: #555;
+}
+.ghost-hotkey-label-light {
+    right: 7px;
+    color: #bbb;
 }

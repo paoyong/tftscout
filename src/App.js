@@ -41,7 +41,77 @@ class App extends React.Component {
     this.handleText = this.handleText.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.renameToggle = this.renameToggle.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.state = getStartState();
+    this.current_id_list = [];
+    this.hotkey_list = ['a', 's', 'z', 'x', 'c', 'v', 'b'];
+  }
+
+  match(e) {
+    if (this.state.present.players[e.target.id - 1].status !== "eliminated") {
+      this.handlePlayerTileClick(e);
+    }
+  }
+  // Keyboard hotkeys
+  handleKeyPress(e) {
+    console.log(e.shiftKey)
+    var new_e = { target: { id: 0 }, buttons: 1 };
+
+    if (e.shiftKey)
+        new_e.buttons = 2;
+
+    if (!this.state.rename) {
+      switch (e.keyCode) {
+        // a
+        case 65:
+          new_e.target.id = this.current_id_list[0];
+          this.match(new_e);
+          break;
+        // s
+        case 83:
+          new_e.target.id = this.current_id_list[1];
+          this.match(new_e);
+          break;
+        // z
+        case 90:
+          new_e.target.id = this.current_id_list[2];
+          this.match(new_e);
+          break;
+        // x
+        case 88:
+          new_e.target.id = this.current_id_list[3];
+          this.match(new_e);
+          break;
+        // c
+        case 67:
+          new_e.target.id = this.current_id_list[4];
+          this.match(new_e);
+          break;
+        // v
+        case 86:
+          new_e.target.id = this.current_id_list[5];
+          this.match(new_e);
+          break;
+        // b
+        case 66:
+          new_e.target.id = this.current_id_list[6];
+          this.match(new_e);
+          break;
+        // g
+        case 71:
+          if (!this.state.rename) {
+            this.matchGhost();
+          }
+          break;
+      }
+    }
+  }
+  componentDidMount() {
+    document.addEventListener("keydown", this.handleKeyPress);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.handleKeyPress);
   }
 
   handleText(e) {
@@ -79,6 +149,42 @@ class App extends React.Component {
       },
     });
   }
+
+  matchGhost() {
+    const new_players = this.state.present.players;
+    const snapshot_past = cloneDeep(this.state.past);
+    const snapshot_present = cloneDeep(this.state.present);
+
+    var new_matchHistory = cloneDeep(this.state.present.matchHistory);
+      new_players.forEach((p, index) => {
+        if (p.status !== "eliminated") {
+          if (p.c !== 0) {
+            if (p.c >= 4 - this.state.present.elim_c) {
+              p.c = 0;
+              p.status = "active";
+            } else {
+              p.c++;
+            }
+          }
+        }
+      });
+
+      const newGhostPlayer = {name: "Ghost", "status": "ghost"}
+      new_matchHistory.push(newGhostPlayer);
+
+      this.setState({
+        past: {
+          past: snapshot_past,
+          state: snapshot_present,
+        },
+        present: {
+          elim_c: this.state.present.elim_c,
+          players: new_players,
+          matchHistory: new_matchHistory,
+        },
+      });
+
+    }
 
   handlePlayerTileClick(e) {
     const i = e.target.id - 1;
@@ -195,11 +301,16 @@ class App extends React.Component {
     }
   }
   render() {
-    console.log(this.state);
+    this.current_id_list = [];
+    var c = -1;
+
     const ActiveList = this.state.present.players.map((p) => {
-      if (p.status != "eliminated") {
+      if (p.status !== "eliminated") {
+        this.current_id_list.push(p.id);
+        c++;
         return (
           <PlayerTile
+            key={p.id}
             id={p.id}
             status={p.status}
             c={p.c}
@@ -208,6 +319,7 @@ class App extends React.Component {
             handleText={this.handleText}
             name={p.name}
             rename={this.state.rename}
+            hotkey={this.hotkey_list[c]}
           />
         );
       }
@@ -215,8 +327,11 @@ class App extends React.Component {
 
     const EliminatedList = this.state.present.players.map((p) => {
       if (p.status === "eliminated") {
+        this.current_id_list.push(p.id);
+        c++;
         return (
           <PlayerTile
+            key={p.id}
             id={p.id}
             status={p.status}
             handlePlayerTileClick={this.handlePlayerTileClick}
@@ -224,24 +339,31 @@ class App extends React.Component {
             handleText={this.handleText}
             name={p.name}
             rename={this.state.rename}
+            hotkey={p.hotkey}
           />
         );
       }
     });
 
-    const MatchHistoryList = this.state.present.matchHistory.map((p) => {
+    const MatchHistoryList = this.state.present.matchHistory.map((p, i) => {
       var status = "";
+      var name = "";
       if (p.status === "matched") {
         status = "⚔️";
+        name = this.state.present.players[p.id - 1].name;
+      } else if (p.status === "ghost") {
+        status = "👻";
+        name = "Ghost"
       } else {
         status = "❌";
+        name = this.state.present.players[p.id - 1].name;
       }
       return (
         <button
           tabIndex="-1"
-          class="match-history-button button-xsmall pure-button"
+          className="match-history-button button-xsmall pure-button"
         >
-          {status + this.state.present.players[p.id - 1].name}
+          {status + name}
         </button>
       );
     });
@@ -257,14 +379,20 @@ class App extends React.Component {
             {ActiveList}
             {EliminatedList}
           </div>
+          <div className="pure-g">
+              <div className="pure-u-5-5 player-tile">
+                <button className="pure-button ghost-button" disabled={this.state.rename}>👻 Ghost (G) - Skip a match</button>
+                <span className={"hotkey-label ghost-hotkey-label " + (this.state.rename ? "ghost-hotkey-label-light":"")}  >g</span>
+              </div>
+          </div>
 
           <div className="pure-g bottom-buttons-group">
-            <div class="pure-u-2-5">
+            <div className="pure-u-2-5">
               {this.TabRename()}
               <button
                 className={"rename-button pure-button "}
                 onClick={this.renameToggle}
-                tabindex="-1"
+                tabIndex="-1"
               >
                 {" "}
                 Toggle
@@ -273,16 +401,16 @@ class App extends React.Component {
                 {this.state.rename ? " Rename" : " Match"}{" "}
               </span>
             </div>
-            <div class="pure-u-3-5 ">
+            <div className="pure-u-3-5 ">
               <div
-                class="pure-button-group undo-rename-group"
+                className="pure-button-group undo-rename-group"
                 role="group"
                 aria-label="..."
               >
                 <button
                   className="undo-button pure-button"
                   onClick={this.handleUndo}
-                  tabindex="-1"
+                  tabIndex="-1"
                   disabled={this.state.past.past === 0}
                 >
                   Undo
@@ -290,7 +418,7 @@ class App extends React.Component {
                 <button
                   className="redo-button pure-button"
                   onClick={this.handleRedo}
-                  tabindex="-1"
+                  tabIndex="-1"
                   disabled={this.state.future.future === 0}
                 >
                   Redo
@@ -299,7 +427,7 @@ class App extends React.Component {
                 <button
                   className="reset-button pure-button red"
                   onClick={this.handleReset}
-                  tabindex="-1"
+                  tabIndex="-1"
                 >
                   Reset
                 </button>
@@ -309,17 +437,19 @@ class App extends React.Component {
           <p className="noselect">
             {this.state.rename
               ? "⌨️ TAB to cycle through and rename"
-              : "🖱️ CLICK on names when you match with them"}
+              : "🖱️ Left Click  ⌨️ aszxcvbg: Match "}
           </p>
           <p className="noselect">
             {this.state.rename
               ? "⌨️ TAB again at the end to go to match mode"
-              : "🖱️ RIGHT-CLICK to eliminate"}
+              : "🖱️ Right Click ⌨️ SHIFT aszxcvb: Eliminate"}
           </p>
           <h2>Match History</h2>
-          {this.state.present.matchHistory.length === 0
-            ? "<empty>"
-            : MatchHistoryList}
+          <div className="match-history-list">
+            {this.state.present.matchHistory.length === 0
+              ? "<empty>"
+              : MatchHistoryList}
+          </div>
           <footer>
             {" "}
             Made by Pao Yong with ReactJS •{" "}
