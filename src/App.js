@@ -458,8 +458,8 @@ class App extends React.Component {
           </div>
           <footer>
             {" "}
-            Made by Pao Yong with ReactJS •{" "}
-            <a href="https://github.com/paoyong/tftscout">GitHub</a> • Art by
+          <a href="https://github.com/paoyong/tftscout">GitHub</a> •&nbsp;  
+          <a href="https://github.com/paoyong/tftscout#algorithm">Algorithm</a> •  Art Copyright
             Riot Games
           </footer>
         </div>
