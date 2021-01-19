@@ -25,9 +25,9 @@ function getStartState() {
       matchHistory: [],
     },
     future: {
-        future: 0,
-        state: 0
-    }
+      future: 0,
+      state: 0,
+    },
   };
   return cloneDeep(startState);
 }
@@ -75,8 +75,8 @@ class App extends React.Component {
       },
       future: {
         future: s.future.future,
-        state: s.future.state
-      }
+        state: s.future.state,
+      },
     });
   }
 
@@ -134,10 +134,8 @@ class App extends React.Component {
       new_matchHistory.push(new_matchHistoryPlayer);
 
       const new_elim_c = (() => {
-        if (this.state.present.elim_c < 3)
-            return this.state.present.elim_c + 1
-        else
-            return this.state.present.elim_c
+        if (this.state.present.elim_c < 3) return this.state.present.elim_c + 1;
+        else return this.state.present.elim_c;
       })();
       this.setState({
         past: {
@@ -167,8 +165,8 @@ class App extends React.Component {
       },
       future: {
         future: future,
-        state: present
-      }
+        state: present,
+      },
     });
   }
 
@@ -180,14 +178,14 @@ class App extends React.Component {
     this.setState({
       past: {
         past: past,
-        state: present
+        state: present,
       },
       present: {
         elim_c: future.state.elim_c,
         players: future.state.players,
         matchHistory: future.state.matchHistory,
       },
-      future: futurefuture
+      future: futurefuture,
     });
   }
 
@@ -239,9 +237,12 @@ class App extends React.Component {
         status = "❌";
       }
       return (
-          <button tabIndex="-1" class="match-history-button button-xsmall pure-button">
-            {status + this.state.present.players[p.id - 1].name}
-          </button>
+        <button
+          tabIndex="-1"
+          class="match-history-button button-xsmall pure-button"
+        >
+          {status + this.state.present.players[p.id - 1].name}
+        </button>
       );
     });
 
@@ -268,7 +269,9 @@ class App extends React.Component {
                 {" "}
                 Toggle
               </button>
-              <span className="noselect">{this.state.rename ? " Rename" : " Match"} </span>
+              <span className="noselect">
+                {this.state.rename ? " Rename" : " Match"}{" "}
+              </span>
             </div>
             <div class="pure-u-3-5 ">
               <div
