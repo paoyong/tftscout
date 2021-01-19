@@ -457,7 +457,6 @@ class App extends React.Component {
               : MatchHistoryList}
           </div>
           <footer>
-            <p>Current Algorithm</p>
             {" "}
             Made by Pao Yong with ReactJS •{" "}
             <a href="https://github.com/paoyong/tftscout">GitHub</a> • Art by
