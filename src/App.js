@@ -229,12 +229,16 @@ class App extends React.Component {
       // Eliminate
     } else if (e.buttons === 2) {
       new_players[i].status = "eliminated";
-      new_players.forEach((p) => {
+
+      // reset if 3 players left
+      if (this.state.present.elim_c === 3) {
+         new_players.forEach((p) => {
         if (p.status === "matched") {
           p.c = 0;
           p.status = "active";
         }
       });
+      }
 
       new_matchHistoryPlayer.status = "eliminated";
       new_matchHistory.push(new_matchHistoryPlayer);
@@ -243,6 +247,7 @@ class App extends React.Component {
         if (this.state.present.elim_c < 3) return this.state.present.elim_c + 1;
         else return this.state.present.elim_c;
       })();
+
       this.setState({
         past: {
           past: snapshot_past,
@@ -254,6 +259,7 @@ class App extends React.Component {
           matchHistory: new_matchHistory,
         },
       });
+      console.log(this.state.present.elim_c)
     }
   }
 
@@ -451,6 +457,7 @@ class App extends React.Component {
               : MatchHistoryList}
           </div>
           <footer>
+            <p>Current Algorithm</p>
             {" "}
             Made by Pao Yong with ReactJS •{" "}
             <a href="https://github.com/paoyong/tftscout">GitHub</a> • Art by

@@ -144,7 +144,7 @@ input {
                                   supported by Chrome and Opera */
 }
 .match-history-list {
-  height: 270px;
+  min-height: 240px;
 }
 
 .player-tile {
