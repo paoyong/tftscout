@@ -73,6 +73,10 @@ class App extends React.Component {
         players: s.present.players,
         matchHistory: s.present.matchHistory,
       },
+      future: {
+        future: s.future.future,
+        state: s.future.state
+      }
     });
   }
 
