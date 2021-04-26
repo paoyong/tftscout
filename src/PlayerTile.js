@@ -47,11 +47,11 @@ class SmartInput extends React.Component {
           value={this.props.name}
           onMouseDown={this.props.handlePlayerTileClick}
           onContextMenu={(e) => e.preventDefault()}
-          readonly="readOnly"
+          readOnly="readOnly"
           unselectable="on"
           tabIndex="-1"
         />
-        <span className="hotkey-label">{this.props.hotkey}</span>
+        <span className="hotkey-label">{this.props.c}</span>
         </div>
       );
     }
@@ -81,13 +81,13 @@ class PlayerTile extends React.Component {
       <div className={"PlayerTile pure-g "}>
         <SmartInput
           rename={this.props.rename}
+          c={this.props.c}
           color={color}
           id={this.props.id}
           handleText={this.props.handleText}
           handlePlayerTileClick={this.props.handlePlayerTileClick}
           name={this.props.name}
           status={this.props.status}
-          handleEliminate={this.props.handleEliminate}
           hotkey={this.props.hotkey}
         />
       </div>

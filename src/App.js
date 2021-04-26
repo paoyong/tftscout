@@ -12,7 +12,8 @@ function getStartState() {
       state: 0,
     },
     present: {
-      elim_c: 0,
+      algorithm: "Cannot face twice within 5 rounds",
+      alive: 8,
       players: [
         { id: "1", name: "", status: "active", c: 0 },
         { id: "2", name: "", status: "active", c: 0 },
@@ -38,6 +39,8 @@ class App extends React.Component {
     this.handlePlayerTileClick = this.handlePlayerTileClick.bind(this);
     this.handleUndo = this.handleUndo.bind(this);
     this.handleRedo = this.handleRedo.bind(this);
+    this.canUndo = this.canUndo.bind(this);
+    this.canRedo = this.canRedo.bind(this);
     this.handleText = this.handleText.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.renameToggle = this.renameToggle.bind(this);
@@ -55,7 +58,6 @@ class App extends React.Component {
   }
   // Keyboard hotkeys
   handleKeyPress(e) {
-    console.log(e.shiftKey)
     var new_e = { target: { id: 0 }, buttons: 1 };
 
     if (e.shiftKey)
@@ -100,9 +102,21 @@ class App extends React.Component {
           break;
         // g
         case 71:
-          if (!this.state.rename) {
+          if (!this.state.rename)
             this.matchGhost();
-          }
+          break;
+        // r
+        case 82:
+          // shift r
+          if (e.shiftKey) 
+            this.handleReset();
+          if (this.canRedo())
+            this.handleRedo();
+          break;
+        // u
+        case 85:
+          if (this.canUndo()) 
+            this.handleUndo();
           break;
       }
     }
@@ -132,35 +146,19 @@ class App extends React.Component {
 
   handleReset(e) {
     const s = getStartState();
-
-    this.setState({
-      rename: s.rename,
-      past: {
-        past: s.past.past,
-        state: s.past.state,
-      },
-      present: {
-        elim_c: s.present.elim_c,
-        players: s.present.players,
-        matchHistory: s.present.matchHistory,
-      },
-      future: {
-        future: s.future.future,
-        state: s.future.state,
-      },
-    });
+    this.setState(s);
   }
 
   matchGhost() {
     const new_players = this.state.present.players;
     const snapshot_past = cloneDeep(this.state.past);
     const snapshot_present = cloneDeep(this.state.present);
-
     var new_matchHistory = cloneDeep(this.state.present.matchHistory);
-      new_players.forEach((p, index) => {
+
+    new_players.forEach((p, index) => {
         if (p.status !== "eliminated") {
           if (p.c !== 0) {
-            if (this.state.present.elim_c > 3) {
+            if (this.state.present.alive < 5) {
                 if (p.c >= 1) {
                     p.c = 0;
                     p.status = "active";
@@ -168,7 +166,7 @@ class App extends React.Component {
                     p.c++;
                 }
             }
-            else if (p.c >= 4 - this.state.present.elim_c) {
+            else if (p.c >= 4 - (8 - this.state.present.alive)) {
               p.c = 0;
               p.status = "active";
             } else {
@@ -187,7 +185,6 @@ class App extends React.Component {
           state: snapshot_present,
         },
         present: {
-          elim_c: this.state.present.elim_c,
           players: new_players,
           matchHistory: new_matchHistory,
         },
@@ -197,88 +194,105 @@ class App extends React.Component {
 
   handlePlayerTileClick(e) {
     const i = e.target.id - 1;
-    const new_players = this.state.present.players;
+    const new_players = cloneDeep(this.state.present.players);
     const snapshot_past = cloneDeep(this.state.past);
     const snapshot_present = cloneDeep(this.state.present);
-
+    var snapshot_alive = cloneDeep(this.state.present.alive);
+    var snapshot_algorithm = cloneDeep(this.state.present.algorithm);
     var new_matchHistory = cloneDeep(this.state.present.matchHistory);
     var new_matchHistoryPlayer = cloneDeep(new_players[i]);
 
-    // Match
+    // player name button pressed
     if (e.buttons === 1) {
-      new_players[i].status = "matched";
-      new_players.forEach((p, index) => {
-        if (p.status !== "eliminated") {
-          if (index === i) p.c++
-          else if (p.c !== 0) {
-            if (this.state.present.elim_c > 3) {
-                if (p.c >= 1) {
-                    p.c = 0;
-                    p.status = "active";
-                } else {
-                    p.c++;
-                }
+        // match this player on press
+        // i is the matched player
+        new_players[i].status = "matched";
+
+        // algorithm for 5 players left - use round count algorithm.
+        if (snapshot_alive >= 5) {
+          new_players.forEach((p, index) => {
+            if (p.status !== "eliminated") {
+              if (index === i) {
+                p.c++
+              } else if (p.c !== 0) {
+                  // Player counter reset
+                  if (p.c >= Math.max(2, snapshot_alive - 4)) {
+                      p.c = 0;
+                      p.status = "active";
+                  } else {
+                      p.c++;
+                  }
+              }
             }
-            else if (p.c >= 4 - this.state.present.elim_c) {
+          });
+        } else if (snapshot_alive === 4) {
+         // TODO 4 players left - use Round Robin
+          new_players.forEach((p, index) => {
+              if (index === i) {
+                  p.c++
+              }
+          });
+        
+        } 
+        
+        new_matchHistoryPlayer.status = "matched";
+        new_matchHistory.push(new_matchHistoryPlayer);
+        this.setState({
+          past: {
+            past: snapshot_past,
+            state: snapshot_present,
+          },
+          present: {
+            algorithm: snapshot_algorithm,
+            alive: snapshot_alive,
+            players: new_players,
+            matchHistory: new_matchHistory,
+          },
+        });
+    } else if (e.buttons === 2) {
+        // Eliminate this person
+        new_players[i].status = "eliminated";
+        snapshot_alive--;
+
+        // reset once on 3 players left
+        if (snapshot_alive === 3) {
+          new_players.forEach((p) => {
+            if (p.status === "matched") {
               p.c = 0;
               p.status = "active";
-            } else {
-              p.c++;
             }
-          }
+          });
         }
-      });
 
-      new_matchHistoryPlayer.status = "matched";
-      new_matchHistory.push(new_matchHistoryPlayer);
-
-      this.setState({
-        past: {
-          past: snapshot_past,
-          state: snapshot_present,
-        },
-        present: {
-          elim_c: this.state.present.elim_c,
-          players: new_players,
-          matchHistory: new_matchHistory,
-        },
-      });
-
-      // Eliminate
-    } else if (e.buttons === 2) {
-      new_players[i].status = "eliminated";
-
-      // reset if 3 players left
-      if (this.state.present.elim_c >= 4) {
-         new_players.forEach((p) => {
-        if (p.status === "matched") {
-          p.c = 0;
-          p.status = "active";
+        if (snapshot_alive > 4) {
+          snapshot_algorithm = "Cannot face twice within " + Math.max(3, snapshot_alive - 3) + " rounds";
         }
-      });
+        else if (snapshot_alive === 4) {
+          snapshot_algorithm = "Round Robin";
+        } else if (snapshot_alive <= 3) {
+          snapshot_algorithm = "Free For All";
+        }
+
+
+        new_matchHistoryPlayer.status = "eliminated";
+        new_matchHistory.push(new_matchHistoryPlayer);
+
+        this.setState({
+          past: {
+            past: snapshot_past,
+            state: snapshot_present,
+          },
+          present: {
+            algorithm: snapshot_algorithm,
+            alive: snapshot_alive,
+            players: new_players,
+            matchHistory: new_matchHistory,
+          },
+        });
       }
-
-      new_matchHistoryPlayer.status = "eliminated";
-      new_matchHistory.push(new_matchHistoryPlayer);
-
-      const new_elim_c = this.state.present.elim_c + 1;
-
-      this.setState({
-        past: {
-          past: snapshot_past,
-          state: snapshot_present,
-        },
-        present: {
-          elim_c: new_elim_c,
-          players: new_players,
-          matchHistory: new_matchHistory,
-        },
-      });
-      console.log(this.state.present.elim_c)
     }
-  }
 
-  handleUndo(e) {
+  handleUndo() {
     const present = cloneDeep(this.state.present);
     const future = cloneDeep(this.state.future);
     const past = cloneDeep(this.state.past);
@@ -286,7 +300,8 @@ class App extends React.Component {
     this.setState({
       past: pastpast,
       present: {
-        elim_c: past.state.elim_c,
+        algorithm: past.state.algorithm,
+        alive: past.state.alive,
         players: past.state.players,
         matchHistory: past.state.matchHistory,
       },
@@ -297,24 +312,35 @@ class App extends React.Component {
     });
   }
 
-  handleRedo(e) {
+  handleRedo() {
     const past = cloneDeep(this.state.past);
     const present = cloneDeep(this.state.present);
     const future = cloneDeep(this.state.future);
     const futurefuture = cloneDeep(this.state.future.future);
+
     this.setState({
       past: {
         past: past,
         state: present,
       },
       present: {
-        elim_c: future.state.elim_c,
+        algorithm: future.state.algorithm,
+        alive: future.state.alive,
         players: future.state.players,
         matchHistory: future.state.matchHistory,
       },
       future: futurefuture,
     });
   }
+
+  canUndo() {
+    return this.state.past.past !== 0
+  }
+
+  canRedo() {
+    return this.state.future.future !== 0
+  }
+
 
   TabRename() {
     if (this.state.rename) {
@@ -336,7 +362,6 @@ class App extends React.Component {
             status={p.status}
             c={p.c}
             handlePlayerTileClick={this.handlePlayerTileClick}
-            handleEliminate={this.handleEliminate}
             handleText={this.handleText}
             name={p.name}
             rename={this.state.rename}
@@ -355,8 +380,8 @@ class App extends React.Component {
             key={p.id}
             id={p.id}
             status={p.status}
+            c={p.c}
             handlePlayerTileClick={this.handlePlayerTileClick}
-            handleEliminate={this.handleEliminate}
             handleText={this.handleText}
             name={p.name}
             rename={this.state.rename}
@@ -397,6 +422,11 @@ class App extends React.Component {
             <p>🔴 = possible to face them next round</p>
           </div>
           <div className="players-list">
+            <h2 className="noselect mode">
+                {this.state.rename ? "Rename Mode" : "Match Mode"}{" "}
+            </h2>
+            <p>{this.state.present.alive} alive in lobby</p>
+            <p>Algorithm: {this.state.present.algorithm}</p>
             {ActiveList}
             {EliminatedList}
           </div>
@@ -418,9 +448,6 @@ class App extends React.Component {
                 {" "}
                 Toggle
               </button>
-              <span className="noselect">
-                {this.state.rename ? " Rename" : " Match"}{" "}
-              </span>
             </div>
             <div className="pure-u-3-5 ">
               <div
@@ -432,7 +459,7 @@ class App extends React.Component {
                   className="undo-button pure-button"
                   onClick={this.handleUndo}
                   tabIndex="-1"
-                  disabled={this.state.past.past === 0}
+                  disabled={!this.canUndo()}
                 >
                   Undo
                 </button>
@@ -440,7 +467,7 @@ class App extends React.Component {
                   className="redo-button pure-button"
                   onClick={this.handleRedo}
                   tabIndex="-1"
-                  disabled={this.state.future.future === 0}
+                  disabled={!this.canRedo()}
                 >
                   Redo
                 </button>
